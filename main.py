@@ -1,8 +1,8 @@
 from langchain_ollama.llms import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
-# from vector import retriever
+from vector import retriever
 
-model = OllamaLLM(model="deepseek-r1:1.5b")
+model = OllamaLLM(model="llama3.2:1b")
 
 template = """
 You are an exeprt in answering questions about a pizza restaurant
@@ -20,8 +20,7 @@ while True:
     print("\n\n")
     if question == "q":
         break
-    
-    # reviews = retriever.invoke(question)
-    for chunk in chain.stream({"reviews": [], "question": question}):
+    reviews = retriever.invoke(question)
+    for chunk in chain.stream({"reviews": reviews, "question": question}):
         print(chunk, end="", flush=True)
     print()
